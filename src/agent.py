@@ -1,14 +1,19 @@
-from agno import Agent, Model
+from agno.agent import Agent
+from agno.models.openai import OpenAIChat
+from agno.run.agent import RunStatus
 
 
 class ArtigoAgent:
     def __init__(self, modelo: str = "gpt-4o"):
         self.modelo = modelo
         self._agent = Agent(
-            model=Model(model_name=self.modelo),
+            model=OpenAIChat(id=self.modelo),
             markdown=True,
         )
 
     async def gerar(self, prompt: str) -> str:
         resposta = await self._agent.arun(prompt)
-        return resposta.content
+        if resposta.status == RunStatus.error:
+            msg = f"Erro do agente: {resposta.content}"
+            raise RuntimeError(msg)
+        return str(resposta.content)

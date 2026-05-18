@@ -55,14 +55,14 @@ description: "Task list for artigo blog generator"
 
 **Independent Test**: Run `python -m main generate` with sample .md files and verify output in `/artigos`
 
-- [ ] T017 [US1] Create src/cli.py with Typer app and `generate` command
-- [ ] T018 [US1] Implement directory validation (create if not exists, notify user)
-- [ ] T019 [US1] Implement multi-file processing (read all .md from source recursively)
-- [ ] T020 [US1] Implement article generation with Agno agent
-- [ ] T021 [US1] Implement output file naming (use title, add counter if exists)
-- [ ] T022 [US1] Implement frontmatter metadata extraction and inclusion in output
-- [ ] T023 [US1] Create src/main.py as entry point with `__main__`
-- [ ] T024 [US1] Test generation end-to-end with sample annotations
+- [x] T017 [US1] Create src/cli.py with Typer app and `generate` command
+- [x] T018 [US1] Implement directory validation (create if not exists, notify user)
+- [x] T019 [US1] Implement multi-file processing (read all .md from source recursively)
+- [x] T020 [US1] Implement article generation with Agno agent
+- [x] T021 [US1] Implement output file naming (use title, add counter if exists)
+- [x] T022 [US1] Implement frontmatter metadata extraction and inclusion in output
+- [x] T023 [US1] Create src/main.py as entry point with `__main__`
+- [x] T024 [US1] Test generation end-to-end with sample annotations
 
 **Checkpoint**: User can run `python -m main generate` and get a Medium-style article
 

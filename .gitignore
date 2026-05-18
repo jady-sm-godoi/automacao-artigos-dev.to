@@ -19,3 +19,10 @@ Thumbs.db
 
 # Logs
 *.log
+
+# Environment
+.env
+# Anotações: sources
+source/*.md
+# Resultados: artigos
+artigos/*.md
