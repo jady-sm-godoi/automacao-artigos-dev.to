@@ -90,9 +90,9 @@ description: "Task list for artigo blog generator"
 
 **Independent Test**: Generate article and verify markdown formatting
 
-- [ ] T030 [P] [US3] Refine prompt_template.md for Medium style (paragraphs, structure, tone)
-- [ ] T031 [P] [US3] Ensure markdown formatting preserved (headings, lists, bold, code blocks)
-- [ ] T032 [US3] Test with various annotation formats (basic, code, quotes)
+- [x] T030 [P] [US3] Refine prompt_template.md for Medium style (paragraphs, structure, tone)
+- [x] T031 [P] [US3] Ensure markdown formatting preserved (headings, lists, bold, code blocks)
+- [x] T032 [US3] Test with various annotation formats (basic, code, quotes)
 
 **Checkpoint**: Articles are professional and readable in Medium style
 
