@@ -74,11 +74,11 @@ description: "Task list for artigo blog generator"
 
 **Independent Test**: Run `python -m main generate --help` and verify output
 
-- [ ] T025 [P] [US2] Add `--help` support with Typer documentation
-- [ ] T026 [P] [US2] Add progress output with rich (reading files, processing, saving)
-- [ ] T027 [P] [US2] Add default paths when no arguments provided
-- [ ] T028 [P] [US2] Add `--source`, `--output`, `--template`, `--verbose` CLI options
-- [ ] T029 [US2] Test CLI help and argument parsing
+- [x] T025 [P] [US2] Add `--help` support with Typer documentation
+- [x] T026 [P] [US2] Add progress output with rich (reading files, processing, saving)
+- [x] T027 [P] [US2] Add default paths when no arguments provided
+- [x] T028 [P] [US2] Add `--source`, `--output`, `--template`, `--verbose` CLI options
+- [x] T029 [US2] Test CLI help and argument parsing
 
 **Checkpoint**: CLI is user-friendly and provides clear feedback
 

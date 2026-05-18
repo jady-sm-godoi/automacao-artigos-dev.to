@@ -2,7 +2,6 @@ from pathlib import Path
 
 import typer
 from rich.console import Console
-from rich.progress import Progress, SpinnerColumn, TextColumn
 
 from src.config import Config
 from src.services.generator import gerar_artigo
@@ -31,16 +30,12 @@ def generate(
         verbose=verbose,
     )
 
-    with Progress(
-        SpinnerColumn(),
-        TextColumn("[progress.description]{task.description}"),
-        console=console,
-        disable=not (verbose or True),
-    ) as progress:
-        progress.add_task(description="Gerando artigo...", total=None)
-
+    with console.status("[bold green]Lendo anotações...") as status:
         try:
+            status.update("[bold green]Lendo anotações...")
             artigo = gerar_artigo(config)
+
+            status.update("[bold green]Artigo gerado com sucesso!")
             console.print(
                 f"\n[green]✓[/] Artigo salvo em: "
                 f"{output / artigo.titulo.lower().replace(' ', '-')[:50]}.md"
