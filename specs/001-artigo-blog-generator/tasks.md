@@ -39,13 +39,13 @@ description: "Task list for artigo blog generator"
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T010 Create src/config.py with Config dataclass (source_dir, output_dir, template_path, modelo, verbose)
-- [ ] T011 Create src/models/artigo.py with Anotacao and Artigo dataclasses
-- [ ] T012 Create templates/prompt_template.md with placeholders {{conteudo}}, {{titulo}}, {{tags}}
-- [ ] T013 Create src/services/template.py (load and render template)
-- [ ] T014 Create src/services/reader.py (read markdown files with frontmatter support)
-- [ ] T015 [P] Create src/agent.py with Agno Agent using GPT-4o
-- [ ] T016 Create src/services/generator.py (orchestrates reader + agent + writer)
+- [x] T010 Create src/config.py with Config dataclass (source_dir, output_dir, template_path, modelo, verbose)
+- [x] T011 Create src/models/artigo.py with Anotacao and Artigo dataclasses
+- [x] T012 Create templates/prompt_template.md with placeholders {{conteudo}}, {{titulo}}, {{tags}}
+- [x] T013 Create src/services/template.py (load and render template)
+- [x] T014 Create src/services/reader.py (read markdown files with frontmatter support)
+- [x] T015 [P] Create src/agent.py with Agno Agent using GPT-4o
+- [x] T016 Create src/services/generator.py (orchestrates reader + agent + writer)
 
 ---
 
