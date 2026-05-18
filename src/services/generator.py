@@ -1,11 +1,17 @@
 import asyncio
 from datetime import datetime
+from pathlib import Path
 
 from src.agent import ArtigoAgent
 from src.config import Config
+from src.logger import setup_logger
 from src.models.artigo import Artigo
 from src.services.reader import MarkdownReader
 from src.services.template import TemplateRenderer
+
+logger = setup_logger(__name__)
+
+EXTENSOES_VALIDAS = {".md", ".markdown"}
 
 
 class GeradorArtigo:
@@ -17,10 +23,18 @@ class GeradorArtigo:
         self.config.output_dir.mkdir(parents=True, exist_ok=True)
         self.config.template_path.parent.mkdir(parents=True, exist_ok=True)
 
+    def _validar_extensao(self, caminho: Path) -> None:
+        if caminho.suffix.lower() not in EXTENSOES_VALIDAS:
+            msg = f"Extensão não suportada: {caminho.suffix}"
+            raise ValueError(msg)
+
     def _nome_arquivo(self, titulo: str) -> str:
         slug = titulo.lower()[:50]
         slug = "".join(c if c.isalnum() or c in "-_" else "-" for c in slug)
         slug = slug.strip("-")
+
+        if not slug:
+            slug = "artigo"
 
         caminho_base = self.config.output_dir / f"{slug}.md"
         if not caminho_base.exists():
@@ -47,7 +61,7 @@ class GeradorArtigo:
             first_fm = anotacoes[0].frontmatter
             titulo = first_fm.get("titulo") or first_fm.get("title") or titulo
 
-        return "\n\n".join(partes), titulo, ", ".join(sorted(tags))
+        return "\n\n".join(partes), titulo.strip(), ", ".join(sorted(tags))
 
     async def gerar(self) -> Artigo:
         self._garantir_diretorios()
@@ -59,6 +73,12 @@ class GeradorArtigo:
             msg = "Nenhuma anotação encontrada em"
             raise ValueError(f"{msg} {self.config.source_dir}")
 
+        logger.info(
+            "Total de anotações: %d | Ignorados: %d",
+            len(anotacoes),
+            ignorados,
+        )
+
         conteudo, titulo, tags_str = self._montar_conteudo(anotacoes)
 
         renderer = TemplateRenderer(self.config.template_path)
@@ -69,11 +89,14 @@ class GeradorArtigo:
         )
 
         agent = ArtigoAgent(modelo=self.config.modelo)
+        logger.info("Gerando artigo com modelo: %s", self.config.modelo)
         artigo_gerado = await agent.gerar(prompt)
 
         nome_arquivo = self._nome_arquivo(titulo)
         caminho_saida = self.config.output_dir / nome_arquivo
         caminho_saida.write_text(artigo_gerado, encoding="utf-8")
+
+        logger.info("Artigo salvo em: %s", caminho_saida)
 
         return Artigo(
             titulo=titulo,
