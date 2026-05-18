@@ -8,4 +8,14 @@ wheels/
 
 # Virtual environments
 .venv
+
+# IDE
 .opencode/
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log

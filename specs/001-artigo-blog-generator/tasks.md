@@ -21,15 +21,15 @@ description: "Task list for artigo blog generator"
 
 **Purpose**: Project initialization and basic structure
 
-- [ ] T001 Create src/ directory structure
-- [ ] T002 [P] Create src/__init__.py
-- [ ] T003 [P] Create src/services/__init__.py
-- [ ] T004 [P] Create src/models/__init__.py
-- [ ] T005 [P] Create tests/unit/__init__.py and tests/integration/__init__.py
-- [ ] T006 [P] Create templates/ directory
-- [ ] T007 Configure pyproject.toml with dependencies (agno, typer, python-frontmatter, rich)
-- [ ] T008 Create .python-version if not exists
-- [ ] T009 Run `uv sync` to install dependencies
+- [x] T001 Create src/ directory structure
+- [x] T002 [P] Create src/__init__.py
+- [x] T003 [P] Create src/services/__init__.py
+- [x] T004 [P] Create src/models/__init__.py
+- [x] T005 [P] Create tests/unit/__init__.py and tests/integration/__init__.py
+- [x] T006 [P] Create templates/ directory
+- [x] T007 Configure pyproject.toml with dependencies (agno, typer, python-frontmatter, rich)
+- [x] T008 Create .python-version if not exists
+- [x] T009 Run `uv sync` to install dependencies
 
 ---
 
