@@ -12,10 +12,10 @@
 git clone <repo-url>
 cd automacao_artigos
 
-# Ative o ambiente virtual
-source .venv/bin/activate
+# Instale dependências
+uv sync
 
-# Configure a API key
+# Configure a API key (crie um .env ou exporte)
 export OPENAI_API_KEY="sua-chave-aqui"
 
 # (Opcional) Adicione ao seu shell profile
@@ -26,13 +26,16 @@ echo 'export OPENAI_API_KEY="sua-chave-aqui"' >> ~/.zshrc
 
 ```bash
 # Gere um artigo a partir das anotações em /source
-python -m main generate
+artigo
+
+# Via entry point (após uv sync)
+artigo
 
 # Com verbose
-python -m main generate --verbose
+artigo --verbose
 
 # Especifique diretórios personalizados
-python -m main generate --source ./minhas-notas --output ./meus-artigos
+artigo --source ./minhas-notas --output ./meus-artigos
 ```
 
 ## Estrutura de Diretórios
@@ -84,9 +87,10 @@ Edite `templates/prompt_template.md` para alterar o estilo do artigo gerado.
 
 | Comando | Descrição |
 |---------|-----------|
-| `python -m main generate` | Gera artigo a partir de /source |
-| `python -m main --help` | Mostra ajuda geral |
-| `python -m main generate --help` | Mostra ajuda do comando generate |
+| `artigo` | Gera artigo a partir de /source |
+| `artigo --help` | Mostra ajuda geral |
+
+| `uv run pytest` | Executa os testes |
 
 ## Troubleshooting
 

@@ -6,10 +6,12 @@ from rich.console import Console
 from src.config import Config
 from src.services.generator import gerar_artigo
 
+app = typer.Typer()
 console = Console()
 
 
-def generate(
+@app.callback(invoke_without_command=True)
+def main(
     source: Path = typer.Option(
         "source", "--source", help="Diretório com anotações"
     ),
@@ -46,7 +48,3 @@ def generate(
         except Exception as e:
             console.print(f"\n[red]✗[/] Erro: {e}")
             raise typer.Exit(code=1)
-
-
-def app():
-    typer.run(generate)

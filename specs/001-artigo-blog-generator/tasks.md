@@ -102,15 +102,15 @@ description: "Task list for artigo blog generator"
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [ ] T033 [P] Error handling for API failures (retry logic, user-friendly messages)
-- [ ] T034 [P] Add logging for debugging
-- [ ] T035 [P] Handle edge cases (empty files, short content, non-md files)
-- [ ] T036 Create tests for src/services/reader.py
-- [ ] T037 Create tests for src/services/template.py
-- [ ] T038 Create tests for src/services/generator.py
-- [ ] T039 Create integration test for CLI (test_cli.py)
-- [ ] T040 Run `task lint` and `task format` to ensure code quality
-- [ ] T041 Update quickstart.md if needed
+- [X] T033 [P] Error handling for API failures (retry logic, user-friendly messages)
+- [X] T034 [P] Add logging for debugging
+- [X] T035 [P] Handle edge cases (empty files, short content, non-md files)
+- [X] T036 Create tests for src/services/reader.py
+- [X] T037 Create tests for src/services/template.py
+- [X] T038 Create tests for src/services/generator.py
+- [X] T039 Create integration test for CLI (test_cli.py)
+- [X] T040 Run `uv run ruff check .` and `uv run ruff format .` to ensure code quality
+- [X] T041 Update quickstart.md if needed
 
 ---
 
