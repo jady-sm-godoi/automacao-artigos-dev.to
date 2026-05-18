@@ -8,6 +8,16 @@
 
 **Input**: Criação de um aplicativo Python para gerar artigos estilo Medium a partir de anotações markdown
 
+## Clarifications
+
+### Session 2026-04-29
+
+- Q: Nome do arquivo de artigo → A: Usar título do artigo gerado (ex: titulo-do-artigo.md)
+- Q: Modelo de LLM → A: GPT-4o (OpenAI) - versátil, boa qualidade
+- Q: Estrutura de saída do artigo → A: Markdown formatado (portável, conversível para HTML depois)
+- Q: Prompt do Agente → A: Prompt configurável via arquivo de template
+- Q: Interface CLI → A: `python -m main generate` (subcomando explícito)
+
 ## User Scenarios & Testing
 
 ### User Story 1 - Geração de Artigo (Priority: P1)
@@ -40,7 +50,7 @@ Como usuário, quero executar a geração de artigos via CLI, para que eu possa 
 
 **Acceptance Scenarios**:
 
-1. **Given** o aplicativo está instalado, **When** o usuário executa `python -m main --help`, **Then** a ajuda com comandos disponíveis é exibida
+1. **Given** o aplicativo está instalado, **When** o usuário executa `python -m main generate --help`, **Then** a ajuda com comandos disponíveis é exibida
 
 2. **Given** o usuário executa o comando de geração, **When** o processo inicia, **Then** feedback de progresso é exibido no terminal
 
@@ -66,13 +76,13 @@ Como usuário, quero que o artigo gerado siga o estilo visual do Medium, para qu
 
 ### Edge Cases
 
-- Pasta `/source` não existe: criar automaticamente ou informar erro?
-- Pasta `/artigos` não existe: criar automaticamente ou informar erro?
-- Arquivo markdown vazio: ignorar ou reportar?
-- Anotações muito curtas (menos de 100 caracteres): gerar artigo mínimo ou informar?
-- Arquivos não-markdown na pasta `/source`: ignorar silenciosamente ou reportar warning?
-- Nome do arquivo de output: usar título do artigo ou timestamp?
-- Sobrescrever artigo existente ou criar nova versão?
+- Pasta `/source` não existe: criar automaticamente e informar erro
+- Pasta `/artigos` não existe: criar automaticamente
+- Arquivo markdown vazio: ignorar silenciosamente
+- Anotações muito curtas (menos de 100 caracteres): gerar artigo mínimo ou informar
+- Arquivos não-markdown na pasta `/source`: ignorar silenciosamente (warning em log)
+- **Nome do arquivo de output**: usar título do artigo gerado (ex: `titulo-do-artigo.md`)
+- **Sobrescrever**: criar nova versão incrementando counter se existir
 
 ## Requirements
 
@@ -89,9 +99,10 @@ Como usuário, quero que o artigo gerado siga o estilo visual do Medium, para qu
 
 ### Key Entities
 
-- **Anotacao**: Arquivo markdown de entrada com conteúdo do usuário
-- **Artigo**: Arquivo markdown de saída formatado em estilo Medium
-- **Configuracao**: Parâmetros de geração (pastas, estilo, etc.)
+- **Anotacao**: Arquivo markdown de entrada com conteúdo do usuário (pasta `/source`)
+- **Artigo**: Arquivo markdown de saída formatado em estilo Medium (pasta `/artigos`)
+- **Template**: Arquivo de prompt configurável para o agente Agno
+- **Configuracao**: Parâmetros de geração (pastas, modelo, etc.)
 
 ## Success Criteria
 
@@ -105,6 +116,6 @@ Como usuário, quero que o artigo gerado siga o estilo visual do Medium, para qu
 ## Assumptions
 
 - Usuário tem Python 3.11+ instalado
-- API key para o modelo de IA está configurada via variável de ambiente
+- API key da OpenAI (GPT-4o) está configurada via variável de ambiente
 - Pasta `/source` contém anotações autocontidas (sem dependências externas)
 - Artigo final será lido por humanos, não processado automaticamente
