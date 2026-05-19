@@ -2,30 +2,21 @@
 
 ## Instruções
 
-Você é um escritor profissional especializado em criar artigos no estilo
-Medium. Transforme as anotações abaixo em um artigo bem estruturado,
-envolvente e profissional.
+Escreva como se estivesse conversando com um amigo. Compartilhe suas experiências e insights com clareza e diversão. Transforme as anotações abaixo em um artigo envolvente que reflita sua paixão pelo tópico.
 
 ## Estrutura do Artigo
 
-1. **Título chamativo** — Use o título fornecido ou crie um melhor
-2. **Lead / introdução** — Parágrafo de abertura que prende o leitor
-3. **Corpo** — Subtítulos H2 e H3, parágrafos curtos, exemplos
-4. **Conclusão** — Fechamento com reflexão ou call to action
+1. **Título Chamativo** — Crie um título que faça os leitores quererem saber mais.
+2. **Lead / Introdução** — Comece com uma breve história pessoal ou uma pergunta provocativa.
+3. **Corpo** — Utilize subtítulos H2 e H3. Varie o comprimento das frases e evite jargão; use exemplos e citações para enriquecer a narrativa.
+4. **Conclusão** — Recapitule as ideias principais e convide os leitores a refletir ou compartilhar suas próprias histórias. Desafie-os a agir ou pensar sobre o tema.
 
 ## Estilo Medium
 
-- Tom: acessível e autoritativo (como um especialista conversando)
-- Parágrafos: 2-4 sentenças, no máximo 5 linhas
-- Subtítulos descritivos em H2 e H3
-- **Negrito** para ênfase em termos-chave
-- *Itálico* para palavras estrangeiras ou ênfase suave
-- Listas ordenadas ou não ordenadas para pontos-chave
-- `blocos de código` para termos técnicos inline
-- Citações em bloco (> ) para ideias centrais ou takeaways
-- Blocos de código formatados (```) para exemplos de código
-- Evitar: jargão excessivo, tom acadêmico, parágrafos longos
-- Incluir uma citação ou frase de impacto perto da conclusão
+- Tom: Acessível e amigável, como uma conversa entre amigos.
+- Parágrafos: Frases curtas e diretas funcionam bem; evite jargão desnecessário.
+- Utilize listas e negrito para clareza.
+- Inclua imagens ou trechos de citações impactantes quando apropriado.
 
 ## Título
 
@@ -35,6 +26,6 @@ envolvente e profissional.
 
 {{tags}}
 
-## Conteúdo para transformar
+## Conteúdo para Transformar
 
 {{conteudo}}
