@@ -9,6 +9,7 @@ def test_generate_source_dir_inexistente(tmp_path):
     result = runner.invoke(
         app,
         [
+            "generate",
             "--source",
             str(tmp_path / "inexistente"),
             "--output",
@@ -25,7 +26,13 @@ def test_generate_sem_arquivos_md(tmp_path):
     (source / "nota.txt").write_text("apenas texto")
     result = runner.invoke(
         app,
-        ["--source", str(source), "--output", str(tmp_path / "out")],
+        [
+            "generate",
+            "--source",
+            str(source),
+            "--output",
+            str(tmp_path / "out"),
+        ],
     )
     assert result.exit_code == 1
 
@@ -36,7 +43,13 @@ def test_generate_com_arquivo_curto(tmp_path):
     (source / "curta.md").write_text("curto demais")
     result = runner.invoke(
         app,
-        ["--source", str(source), "--output", str(tmp_path / "out")],
+        [
+            "generate",
+            "--source",
+            str(source),
+            "--output",
+            str(tmp_path / "out"),
+        ],
     )
     assert result.exit_code == 1
 
@@ -49,6 +62,7 @@ def test_generate_com_verbose_flag(tmp_path):
     result = runner.invoke(
         app,
         [
+            "generate",
             "--source",
             str(source),
             "--output",
@@ -57,3 +71,41 @@ def test_generate_com_verbose_flag(tmp_path):
         ],
     )
     assert result.exit_code == 1
+
+
+def test_publish_sem_chave(tmp_path, monkeypatch):
+    monkeypatch.delenv("DEVTO_API_KEY", raising=False)
+    out = tmp_path / "artigos"
+    out.mkdir()
+    (out / "artigo.md").write_text("# Titulo\n\nconteudo")
+    result = runner.invoke(
+        app,
+        [
+            "publish",
+            "artigo",
+            "--output",
+            str(out),
+        ],
+    )
+    assert result.exit_code == 1
+    assert "DEVTO_API_KEY" in result.stdout
+
+
+def test_publish_artigo_inexistente(tmp_path, monkeypatch):
+    monkeypatch.setenv("DEVTO_API_KEY", "fake-key")
+    (tmp_path / "outro-artigo.md").write_text("# Outro\n\nconteudo")
+    (tmp_path / "mais-um.md").write_text("# Mais\n\nconteudo")
+
+    result = runner.invoke(
+        app,
+        [
+            "publish",
+            "artigo-invalido",
+            "--output",
+            str(tmp_path),
+        ],
+    )
+    assert result.exit_code == 1
+    assert "Artigos disponíveis" in result.stdout
+    assert "outro-artigo.md" in result.stdout
+    assert "mais-um.md" in result.stdout

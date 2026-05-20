@@ -16,10 +16,12 @@ class TemplateRenderer:
         conteudo: str,
         titulo: str = "Artigo sem título",
         tags: str = "",
+        imagens: str = "",
     ) -> str:
         template = self._carregar()
         return (
             template.replace("{{conteudo}}", conteudo)
             .replace("{{titulo}}", titulo)
             .replace("{{tags}}", tags)
+            .replace("{{imagens}}", imagens)
         )
