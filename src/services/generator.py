@@ -1,4 +1,6 @@
 import asyncio
+import re
+import shutil
 from datetime import datetime
 from pathlib import Path
 
@@ -12,6 +14,7 @@ from src.services.template import TemplateRenderer
 logger = setup_logger(__name__)
 
 EXTENSOES_VALIDAS = {".md", ".markdown"}
+FORMATOS_IMAGEM = {".png", ".jpg", ".jpeg", ".gif", ".webp"}
 
 
 class GeradorArtigo:
@@ -63,8 +66,55 @@ class GeradorArtigo:
 
         return "\n\n".join(partes), titulo.strip(), ", ".join(sorted(tags))
 
+    def _copiar_imagens(self) -> None:
+        source_img = self.config.source_dir / "imagens"
+        if not source_img.exists():
+            return
+
+        dest_img = self.config.output_dir / "imagens"
+        dest_img.mkdir(parents=True, exist_ok=True)
+
+        for img in source_img.iterdir():
+            if img.is_file() and img.suffix.lower() in FORMATOS_IMAGEM:
+                destino = dest_img / img.name
+                if not destino.exists():
+                    shutil.copy2(img, destino)
+                    logger.info("Imagem copiada: %s", destino)
+
+    def _listar_imagens(self) -> str:
+        img_dir = self.config.source_dir / "imagens"
+        if not img_dir.exists():
+            return "Nenhuma imagem disponível."
+
+        imagens = sorted(
+            p
+            for p in img_dir.iterdir()
+            if p.is_file() and p.suffix.lower() in FORMATOS_IMAGEM
+        )
+
+        if not imagens:
+            return "Nenhuma imagem disponível."
+
+        linhas = [f"- `{p.name}`" for p in imagens[:5]]
+        return "\n".join(linhas)
+
+    @staticmethod
+    def _normalizar_frontmatter(conteudo: str) -> str:
+        padrao = re.compile(
+            r"^```(?:yaml)?\s*\n(---\n.*?\n---)\n```\s*\n?(.*)",
+            re.DOTALL,
+        )
+        match = padrao.match(conteudo)
+        if match:
+            logger.info(
+                "Frontmatter normalizado: removido wrapper ```yaml"
+            )
+            return match.group(1) + "\n\n" + match.group(2)
+        return conteudo
+
     async def gerar(self) -> Artigo:
         self._garantir_diretorios()
+        self._copiar_imagens()
 
         reader = MarkdownReader(self.config.source_dir)
         anotacoes, ignorados = reader.ler_todas()
@@ -80,17 +130,21 @@ class GeradorArtigo:
         )
 
         conteudo, titulo, tags_str = self._montar_conteudo(anotacoes)
+        imagens_str = self._listar_imagens()
 
         renderer = TemplateRenderer(self.config.template_path)
         prompt = renderer.renderizar(
             conteudo=conteudo,
             titulo=titulo,
             tags=tags_str,
+            imagens=imagens_str,
         )
 
         agent = ArtigoAgent(modelo=self.config.modelo)
         logger.info("Gerando artigo com modelo: %s", self.config.modelo)
         artigo_gerado = await agent.gerar(prompt)
+
+        artigo_gerado = self._normalizar_frontmatter(artigo_gerado)
 
         nome_arquivo = self._nome_arquivo(titulo)
         caminho_saida = self.config.output_dir / nome_arquivo
