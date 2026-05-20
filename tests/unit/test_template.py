@@ -55,3 +55,16 @@ def test_carregar_template_lanca_erro(tmp_path):
     renderer = TemplateRenderer(template)
     with pytest.raises(FileNotFoundError):
         renderer._carregar()
+
+
+def test_renderizar_com_imagens(tmp_path):
+    template = tmp_path / "template.md"
+    template.write_text("# {{titulo}}\n\n{{imagens}}\n\n{{conteudo}}")
+    renderer = TemplateRenderer(template)
+    resultado = renderer.renderizar(
+        conteudo="texto",
+        titulo="Artigo",
+        imagens="- `foto.png`\n- `diagrama.jpg`",
+    )
+    assert "`foto.png`" in resultado
+    assert "`diagrama.jpg`" in resultado
