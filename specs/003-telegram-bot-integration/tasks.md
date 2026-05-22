@@ -59,17 +59,17 @@ verificar arquivo .md criado em /source
 
 ### Implementation for User Story 1
 
-- [ ] T059 [P] [US1] Implement text message handler that saves content as
+- [X] T059 [P] [US1] Implement text message handler that saves content as
   .md file in src/services/telegram_bot.py
-- [ ] T060 [P] [US1] Implement filename generation with timestamp pattern
+- [X] T060 [P] [US1] Implement filename generation with timestamp pattern
   `<timestamp>-<chat_id>.md` in src/services/telegram_bot.py
-- [ ] T061 [US1] Implement minimum length validation (100 chars) with
+- [X] T061 [US1] Implement minimum length validation (100 chars) with
   rejection message in src/services/telegram_bot.py
-- [ ] T062 [US1] Implement /start command handler with welcome message in
+- [X] T062 [US1] Implement /start command handler with welcome message in
   src/services/telegram_bot.py
-- [ ] T063 [US1] Wire up Application with token and all handlers, implement
+- [X] T063 [US1] Wire up Application with token and all handlers, implement
   start_polling() entry point in src/services/telegram_bot.py
-- [ ] T064 [US1] Add `artigo bot` CLI command in src/cli.py that
+- [X] T064 [US1] Add `artigo bot` CLI command in src/cli.py that
   instantiates and starts TelegramBotService
 
 **Checkpoint**: Bot responde a texto e /start. Arquivos .md aparecem em

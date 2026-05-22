@@ -8,6 +8,7 @@ from rich.console import Console
 from src.config import Config
 from src.services.generator import gerar_artigo
 from src.services.publisher import PublicadorDevto
+from src.services.telegram_bot import TelegramBotService
 
 app = typer.Typer()
 console = Console()
@@ -111,6 +112,24 @@ def publish(
         raise typer.Exit(code=1)
     except (FileNotFoundError, RuntimeError) as e:
         console.print(f"\n[red]✗[/] {e}")
+        raise typer.Exit(code=1)
+
+
+@app.command()
+def bot():
+    token = os.getenv("TELEGRAM_BOT_TOKEN")
+    if not token:
+        console.print(
+            "[red]✗[/] TELEGRAM_BOT_TOKEN não configurado. Defina em .env"
+        )
+        raise typer.Exit(code=1)
+
+    try:
+        service = TelegramBotService(token)
+        console.print("[green]✓[/] Bot iniciado! Pressione Ctrl+C para parar.")
+        service.start()
+    except Exception as e:
+        console.print(f"\n[red]✗[/] Erro ao iniciar bot: {e}")
         raise typer.Exit(code=1)
 
 

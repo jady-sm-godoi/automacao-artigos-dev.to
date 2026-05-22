@@ -1,4 +1,5 @@
 import asyncio
+from datetime import datetime
 from pathlib import Path
 
 from telegram import Update
@@ -15,6 +16,11 @@ logger = setup_logger(__name__)
 
 TAMANHO_MINIMO_ANOTACAO = 100
 FORMATOS_IMAGEM = {".jpg", ".jpeg", ".png", ".gif", ".webp"}
+
+
+def _gerar_nome_anotacao(chat_id: int) -> str:
+    timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+    return f"{timestamp}-{chat_id}.md"
 
 
 class TelegramBotService:
@@ -94,7 +100,33 @@ class TelegramBotService:
         await update.message.reply_text("⚠️ Comando ainda não implementado.")
 
     async def _handle_text(self, update: Update, _context) -> None:
-        await update.message.reply_text("⚠️ Função ainda não implementada.")
+        texto = update.message.text.strip()
+
+        if len(texto) < TAMANHO_MINIMO_ANOTACAO:
+            await update.message.reply_text(
+                f"❌ Conteúdo muito curto ({len(texto)} caracteres). "
+                f"Mínimo: {TAMANHO_MINIMO_ANOTACAO} caracteres."
+            )
+            logger.info(
+                "Texto rejeitado (curto): %d chars de %s",
+                len(texto),
+                update.effective_user.id,
+            )
+            return
+
+        nome_arquivo = _gerar_nome_anotacao(update.effective_chat.id)
+        caminho = self.source_dir / nome_arquivo
+
+        try:
+            caminho.write_text(texto, encoding="utf-8")
+            logger.info("Anotação salva: %s (%d chars)", caminho, len(texto))
+            await update.message.reply_text(
+                f"✅ Anotação salva em `{nome_arquivo}`\n"
+                f"📝 {len(texto)} caracteres",
+            )
+        except OSError as e:
+            logger.exception("Erro ao salvar anotação: %s", caminho)
+            await update.message.reply_text(f"❌ Erro ao salvar anotação: {e}")
 
     async def _handle_image(self, update: Update, _context) -> None:
         await update.message.reply_text("⚠️ Função ainda não implementada.")
