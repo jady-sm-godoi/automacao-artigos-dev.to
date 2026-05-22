@@ -89,7 +89,8 @@ class TelegramBotService:
             "/gerar — Gera artigo com as anotações\n"
             "/listar — Lista anotações salvas\n"
             "/status — Status do conteúdo\n"
-            "/publicar <nome> — Publica no Dev.to\n\n"
+            "/publicar <nome> — Publica no Dev.to\n"
+            "/publicar <nome> --published — Publicar (visível)\n\n"
             "💬 Envie qualquer texto para salvar como anotação\n"
             "🖼️ Envie imagens para salvar em /source/imagens"
         )
@@ -160,8 +161,87 @@ class TelegramBotService:
                 caption="📄 Artigo gerado",
             )
 
-    async def _cmd_publicar(self, update: Update, _context) -> None:
-        await update.message.reply_text("⚠️ Comando ainda não implementado.")
+    async def _cmd_publicar(  # noqa: PLR0911
+        self, update: Update, context
+    ) -> None:
+        args = context.args
+        publicado = False
+
+        if not args:
+            output_dir = Path("artigos")
+            if not output_dir.exists():
+                await update.message.reply_text(
+                    "❌ Diretório /artigos não encontrado."
+                )
+                return
+            artigos = sorted(output_dir.glob("*.md"))
+            if not artigos:
+                await update.message.reply_text(
+                    "📂 Nenhum artigo em /artigos/. Use /gerar para criar um."
+                )
+                return
+            linhas = [
+                "📂 **Artigos disponíveis:**\n",
+                *(f"• `{a.stem}`" for a in artigos),
+                "",
+                "💡 Uso: `/publicar <nome> [--published]`",
+            ]
+            await update.message.reply_text("\n".join(linhas))
+            return
+
+        args_list = list(args)
+        if "--published" in args_list:
+            publicado = True
+            args_list.remove("--published")
+
+        nome_artigo = args_list[0] if args_list else None
+        if not nome_artigo:
+            await update.message.reply_text(
+                "❌ Informe o nome do artigo.\n"
+                "Uso: `/publicar <nome> [--published]`"
+            )
+            return
+
+        msg = await update.message.reply_text(
+            f"⏳ Publicando `{nome_artigo}` no Dev.to..."
+        )
+
+        cmd = [
+            "uv",
+            "run",
+            "artigo",
+            "publish",
+            nome_artigo,
+        ]
+        if publicado:
+            cmd.append("--published")
+
+        try:
+            process = await asyncio.create_subprocess_exec(
+                *cmd,
+                stdout=asyncio.subprocess.PIPE,
+                stderr=asyncio.subprocess.PIPE,
+            )
+            stdout, stderr = await asyncio.wait_for(
+                process.communicate(), timeout=30.0
+            )
+        except asyncio.TimeoutError:
+            process.kill()
+            await msg.edit_text("❌ Publicação excedeu o tempo limite (30s).")
+            return
+        except FileNotFoundError:
+            await msg.edit_text("❌ Comando `artigo` não encontrado.")
+            return
+
+        if process.returncode != 0:
+            erro = (stderr.decode() or stdout.decode())[:500]
+            await msg.edit_text(f"❌ Erro ao publicar:\n`{erro}`")
+            return
+
+        saida = stdout.decode().strip()
+        await msg.edit_text(
+            f"✅ Artigo **{nome_artigo}** publicado!\n\n`{saida}`"
+        )
 
     async def _cmd_listar(self, update: Update, _context) -> None:
         anotacoes = sorted(self.source_dir.glob("*.md"))

@@ -151,12 +151,12 @@ verificar URL de retorno
 
 ### Implementation for User Story 5
 
-- [ ] T075 [US5] Implement /publicar command handler in
+- [X] T075 [US5] Implement /publicar command handler in
   src/services/telegram_bot.py
-- [ ] T076 [US5] Implement subprocess execution of
+- [X] T076 [US5] Implement subprocess execution of
   `artigo publish <nome> [--published]` in
   src/services/telegram_bot.py
-- [ ] T077 [US5] Implement error handling for /publicar (artigo não
+- [X] T077 [US5] Implement error handling for /publicar (artigo não
   encontrado, chave Dev.to ausente) in src/services/telegram_bot.py
 
 **Checkpoint**: /publicar publica artigo no Dev.to e retorna URL.
