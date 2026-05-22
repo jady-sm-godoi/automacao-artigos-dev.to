@@ -64,6 +64,9 @@ artigo publish github-speckit
 # Publica artigo já publicado
 artigo publish github-speckit --published
 
+# Inicia o bot do Telegram
+artigo bot
+
 # Ajuda
 artigo --help
 artigo publish --help
@@ -100,6 +103,34 @@ artigo publish <nome> --devto-key "minha-chave"
 
 O nome do arquivo pode ser com ou sem `.md`. Se não encontrar, o sistema
 lista os artigos disponíveis.
+
+### Bot do Telegram
+
+```bash
+# Iniciar o bot
+artigo bot
+```
+
+**Pré-requisito**: Token do bot configurado no `.env`:
+```
+TELEGRAM_BOT_TOKEN="seu-token-aqui"
+```
+
+> Obtenha o token em https://t.me/BotFather → `/newbot`
+
+**Comandos disponíveis no bot:**
+
+| Comando | Descrição |
+|---------|-----------|
+| `/start` | Mensagem de boas-vindas |
+| `/ajuda` | Lista todos os comandos |
+| Texto livre | Salva como arquivo .md em /source |
+| Imagem | Salva em /source/imagens/ |
+| `/gerar` | Gera artigo com as anotações e retorna no chat |
+| `/listar` | Lista anotações salvas em /source |
+| `/status` | Exibe contagem de anotações e imagens |
+| `/publicar <nome>` | Publica artigo no Dev.to (rascunho) |
+| `/publicar <nome> --published` | Publica artigo (visível) |
 
 ### Formato das Anotações
 
@@ -205,7 +236,8 @@ src/
     ├── reader.py        # Leitura de arquivos .md
     ├── generator.py     # Orquestração da geração
     ├── template.py      # Renderização de templates
-    └── publisher.py     # Publicação no Dev.to via API
+    ├── publisher.py     # Publicação no Dev.to via API
+    └── telegram_bot.py  # Bot Telegram (handlers, comandos)
 
 tests/
 ├── unit/
@@ -253,7 +285,7 @@ uv run pytest tests/unit/ # só unitários
 
 ### Testes
 
-53 testes divididos em:
+91 testes divididos em:
 
 ```
 tests/
@@ -261,9 +293,10 @@ tests/
 │   ├── test_reader.py  # Reader, frontmatter, edge cases
 │   ├── test_template.py# Template rendering, erros
 │   ├── test_generator.py# Slug, montagem, tags
-│   └── test_publisher.py# API Dev.to, frontmatter, erros HTTP
+│   ├── test_publisher.py# API Dev.to, frontmatter, erros HTTP
+│   └── test_telegram_bot.py  # Bot Telegram, handlers, comandos
 └── integration/
-    └── test_cli.py     # CLI flags, generate + publish, erros
+    └── test_cli.py     # CLI flags, generate, publish, bot
 ```
 
 Rodar:

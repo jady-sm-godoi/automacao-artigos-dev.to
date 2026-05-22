@@ -13,7 +13,7 @@ GPT-4o. Também publica artigos no Dev.to via API.
 - [x] Implementação: COMPLETA
 - [x] Artigos gerados com sucesso (ex: `artigos/github-speckit.md`)
 - [x] Publicação no Dev.to implementada (comando `publish`)
-- [ ] Telegram Bot (`specs/003-telegram-bot-integration/spec.md`) — EM PLANEJAMENTO
+- [x] Telegram Bot (`specs/003-telegram-bot-integration/spec.md`) — IMPLEMENTADO
 
 ### Stack Tecnológica
 - **Linguagem**: Python 3.11+
@@ -107,7 +107,7 @@ artigo --help
 - Conventional Commits (feat:/fix:/chore:/refact:)
 
 ### Testes
-69 testes (unitários + integração):
+91 testes (unitários + integração):
 ```bash
 uv run pytest -v
 ```
@@ -120,7 +120,7 @@ uv run pytest -v
 5. Phase 5: User Story 3 - Estilo Medium (T030-T032) ✅
 6. Phase 6: Polish & Testes (T033-T041) ✅
 7. Phase 7: Publicação Dev.to (T042-T054) ✅
-8. Phase 8: Telegram Bot Integration — EM ANDAMENTO
+8. Phase 8: Telegram Bot Integration — IMPLEMENTADO ✅
 
 ### Referências
 - Plano: `specs/001-artigo-blog-generator/plan.md`

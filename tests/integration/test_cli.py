@@ -1,3 +1,5 @@
+from unittest.mock import MagicMock, patch
+
 from typer.testing import CliRunner
 
 from src.cli import app
@@ -109,3 +111,26 @@ def test_publish_artigo_inexistente(tmp_path, monkeypatch):
     assert "Artigos disponíveis" in result.stdout
     assert "outro-artigo.md" in result.stdout
     assert "mais-um.md" in result.stdout
+
+
+def test_bot_help():
+    result = runner.invoke(app, ["bot", "--help"])
+    assert result.exit_code == 0
+
+
+def test_bot_sem_token(monkeypatch):
+    monkeypatch.delenv("TELEGRAM_BOT_TOKEN", raising=False)
+    result = runner.invoke(app, ["bot"])
+    assert result.exit_code == 1
+    assert "TELEGRAM_BOT_TOKEN" in result.stdout
+
+
+def test_bot_com_token_cria_service(monkeypatch):
+    monkeypatch.setenv("TELEGRAM_BOT_TOKEN", "fake-token-123")
+    with patch("src.cli.TelegramBotService") as mock_service:
+        mock_instance = MagicMock()
+        mock_service.return_value = mock_instance
+
+        result = runner.invoke(app, ["bot"])
+
+    assert result.exit_code == 0

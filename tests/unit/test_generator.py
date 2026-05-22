@@ -200,26 +200,13 @@ def test_slug_titulo_50_caracteres():
 
 
 def test_normalizar_frontmatter_sem_wrapper():
-    conteudo = (
-        "---\n"
-        'title: "Teste"\n'
-        "---\n\n"
-        "# Corpo do artigo"
-    )
+    conteudo = '---\ntitle: "Teste"\n---\n\n# Corpo do artigo'
     resultado = GeradorArtigo._normalizar_frontmatter(conteudo)
     assert resultado == conteudo
 
 
 def test_normalizar_frontmatter_com_wrapper_yaml():
-    conteudo = (
-        "```yaml\n"
-        "---\n"
-        'title: "Teste"\n'
-        "---\n"
-        "```\n"
-        "\n"
-        "# Corpo do artigo"
-    )
+    conteudo = '```yaml\n---\ntitle: "Teste"\n---\n```\n\n# Corpo do artigo'
     resultado = GeradorArtigo._normalizar_frontmatter(conteudo)
     assert resultado.startswith("---")
     assert "```" not in resultado
@@ -227,15 +214,7 @@ def test_normalizar_frontmatter_com_wrapper_yaml():
 
 
 def test_normalizar_frontmatter_com_wrapper_sem_yaml():
-    conteudo = (
-        "```\n"
-        "---\n"
-        'title: "Teste"\n'
-        "---\n"
-        "```\n"
-        "\n"
-        "# Corpo"
-    )
+    conteudo = '```\n---\ntitle: "Teste"\n---\n```\n\n# Corpo'
     resultado = GeradorArtigo._normalizar_frontmatter(conteudo)
     assert resultado.startswith("---")
     assert "```" not in resultado

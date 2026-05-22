@@ -167,14 +167,14 @@ verificar URL de retorno
 
 **Purpose**: Testes, lint, documentação
 
-- [ ] T078 Create unit tests for all handlers in
+- [X] T078 Create unit tests for all handlers in
   tests/unit/test_telegram_bot.py (mock PTB Application)
-- [ ] T079 Extend CLI integration tests for `artigo bot` command in
+- [X] T079 Extend CLI integration tests for `artigo bot` command in
   tests/integration/test_cli.py
-- [ ] T080 [P] Run `task lint` and `task format` — fix all issues
-- [ ] T081 [P] Update docs (README.md, AGENTS.md) with bot setup
+- [X] T080 [P] Run `task lint` and `task format` — fix all issues
+- [X] T081 [P] Update docs (README.md, AGENTS.md) with bot setup
   instructions
-- [ ] T082 Run full test suite: `uv run pytest -v` — all tests passing
+- [X] T082 Run full test suite: `uv run pytest -v` — all tests passing
 
 ---
 
