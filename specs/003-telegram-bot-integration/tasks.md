@@ -107,14 +107,14 @@ retornado no chat
 
 ### Implementation for User Story 3
 
-- [ ] T068 [US3] Implement /gerar command handler that validates content
+- [X] T068 [US3] Implement /gerar command handler that validates content
   exists in /source in src/services/telegram_bot.py
-- [ ] T069 [US3] Implement subprocess execution of `artigo generate` and
+- [X] T069 [US3] Implement subprocess execution of `artigo generate` and
   capture result in src/services/telegram_bot.py
-- [ ] T070 [US3] Implement article reading from /artigos/ and sending as
+- [X] T070 [US3] Implement article reading from /artigos/ and sending as
   text (≤4000 chars) or .md file attachment (>4000 chars) in
   src/services/telegram_bot.py
-- [ ] T071 [US3] Implement error handling for /gerar (no content, timeout,
+- [X] T071 [US3] Implement error handling for /gerar (no content, timeout,
   API failure) in src/services/telegram_bot.py
 
 **Checkpoint**: /gerar retorna artigo completo no chat ou erro amigável.

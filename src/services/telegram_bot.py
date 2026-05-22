@@ -15,6 +15,8 @@ from src.logger import setup_logger
 logger = setup_logger(__name__)
 
 TAMANHO_MINIMO_ANOTACAO = 100
+LIMITE_TEXTO_TELEGRAM = 4000
+TIMEOUT_GERACAO = 180
 FORMATOS_IMAGEM = {".jpg", ".jpeg", ".png", ".gif", ".webp"}
 
 
@@ -93,7 +95,70 @@ class TelegramBotService:
         )
 
     async def _cmd_gerar(self, update: Update, _context) -> None:
-        await update.message.reply_text("⚠️ Comando ainda não implementado.")
+        anotacoes = list(self.source_dir.glob("*.md"))
+        if not anotacoes:
+            await update.message.reply_text(
+                "❌ Nenhuma anotação encontrada em /source.\n"
+                "Envie textos para criar anotações primeiro."
+            )
+            return
+
+        msg = await update.message.reply_text("⏳ Gerando artigo...")
+
+        try:
+            process = await asyncio.create_subprocess_exec(
+                "uv",
+                "run",
+                "artigo",
+                "generate",
+                "--source",
+                str(self.source_dir),
+                stdout=asyncio.subprocess.PIPE,
+                stderr=asyncio.subprocess.PIPE,
+            )
+            stdout, stderr = await asyncio.wait_for(
+                process.communicate(), timeout=TIMEOUT_GERACAO
+            )
+        except asyncio.TimeoutError:
+            process.kill()
+            await msg.edit_text("❌ Geração excedeu o tempo limite (3 min).")
+            return
+        except FileNotFoundError:
+            await msg.edit_text(
+                "❌ Comando `artigo` não encontrado. "
+                "Execute `uv sync` para instalar as dependências."
+            )
+            return
+
+        if process.returncode != 0:
+            erro = (stderr.decode() or stdout.decode())[:500]
+            await msg.edit_text(f"❌ Erro ao gerar artigo:\n`{erro}`")
+            return
+
+        output_dir = Path("artigos")
+        artigos = sorted(
+            output_dir.glob("*.md"),
+            key=lambda p: p.stat().st_mtime,
+            reverse=True,
+        )
+        if not artigos:
+            await msg.edit_text(
+                "❌ Artigo foi gerado mas não encontrado em /artigos/"
+            )
+            return
+
+        artigo_path = artigos[0]
+        conteudo = artigo_path.read_text(encoding="utf-8")
+
+        if len(conteudo) <= LIMITE_TEXTO_TELEGRAM:
+            await msg.edit_text(conteudo)
+        else:
+            await msg.delete()
+            await update.message.reply_document(
+                document=artigo_path.open("rb"),
+                filename=artigo_path.name,
+                caption="📄 Artigo gerado",
+            )
 
     async def _cmd_publicar(self, update: Update, _context) -> None:
         await update.message.reply_text("⚠️ Comando ainda não implementado.")
