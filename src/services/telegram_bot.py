@@ -23,6 +23,11 @@ def _gerar_nome_anotacao(chat_id: int) -> str:
     return f"{timestamp}-{chat_id}.md"
 
 
+def _gerar_nome_imagem(chat_id: int, extensao: str) -> str:
+    timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+    return f"{timestamp}-{chat_id}{extensao}"
+
+
 class TelegramBotService:
     def __init__(self, token: str, source_dir: Path = Path("source")):
         self.token = token
@@ -129,7 +134,45 @@ class TelegramBotService:
             await update.message.reply_text(f"❌ Erro ao salvar anotação: {e}")
 
     async def _handle_image(self, update: Update, _context) -> None:
-        await update.message.reply_text("⚠️ Função ainda não implementada.")
+        chat_id = update.effective_chat.id
+
+        if update.message.photo:
+            photo = update.message.photo[-1]
+            extensao = ".jpg"
+            file = await photo.get_file()
+        elif update.message.document:
+            doc = update.message.document
+            extensao = Path(doc.file_name or "").suffix.lower()
+            if extensao not in FORMATOS_IMAGEM:
+                await update.message.reply_text(
+                    f"❌ Formato não suportado: `{extensao}`. "
+                    f"Aceitos: jpg, png, gif, webp."
+                )
+                logger.info(
+                    "Imagem rejeitada (formato): %s de %s",
+                    extensao,
+                    update.effective_user.id,
+                )
+                return
+            file = await doc.get_file()
+        else:
+            await update.message.reply_text(
+                "❌ Tipo de imagem não reconhecido."
+            )
+            return
+
+        nome_arquivo = _gerar_nome_imagem(chat_id, extensao)
+        caminho = self.imagens_dir / nome_arquivo
+
+        try:
+            await file.download_to_drive(caminho)
+            logger.info("Imagem salva: %s", caminho)
+            await update.message.reply_text(
+                f"✅ Imagem salva em `{nome_arquivo}`"
+            )
+        except Exception as e:
+            logger.exception("Erro ao salvar imagem: %s", caminho)
+            await update.message.reply_text(f"❌ Erro ao salvar imagem: {e}")
 
     async def _handle_unsupported(self, update: Update, _context) -> None:
         await update.message.reply_text(

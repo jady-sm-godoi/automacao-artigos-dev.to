@@ -86,11 +86,11 @@ arquivo salvo em /source/imagens/
 
 ### Implementation for User Story 2
 
-- [ ] T065 [P] [US2] Implement image download handler that saves to
+- [X] T065 [P] [US2] Implement image download handler that saves to
   /source/imagens/ in src/services/telegram_bot.py
-- [ ] T066 [P] [US2] Implement image format validation (jpg, png, gif,
+- [X] T066 [P] [US2] Implement image format validation (jpg, png, gif,
   webp) with rejection message in src/services/telegram_bot.py
-- [ ] T067 [US2] Implement unsupported file type handler with clear
+- [X] T067 [US2] Implement unsupported file type handler with clear
   rejection message in src/services/telegram_bot.py
 
 **Checkpoint**: Bot aceita imagens e rejeita arquivos não suportados.
