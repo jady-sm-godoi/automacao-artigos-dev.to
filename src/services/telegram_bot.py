@@ -363,16 +363,14 @@ class TelegramBotService:
                 self.token[:8] + "...",
             )
             self._running = True
-            self.application.run_polling(stop_callback=self._on_stop)
+            self.application.run_polling()
+            self._running = False
+            logger.info("Bot parou.")
         except Exception:
             logger.exception("Erro ao iniciar bot")
             self._running = False
         finally:
             loop.close()
-
-    def _on_stop(self, _app: Application) -> None:
-        self._running = False
-        logger.info("Bot parou.")
 
     def stop(self) -> None:
         if self.application and self._running:
