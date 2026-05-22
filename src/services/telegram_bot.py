@@ -164,10 +164,32 @@ class TelegramBotService:
         await update.message.reply_text("⚠️ Comando ainda não implementado.")
 
     async def _cmd_listar(self, update: Update, _context) -> None:
-        await update.message.reply_text("⚠️ Comando ainda não implementado.")
+        anotacoes = sorted(self.source_dir.glob("*.md"))
+        if not anotacoes:
+            await update.message.reply_text("📂 Nenhuma anotação em /source.")
+            return
+
+        linhas = ["📂 **Anotações em /source:**\n"]
+        for arq in anotacoes:
+            tamanho = len(arq.read_text(encoding="utf-8"))
+            linhas.append(f"• `{arq.name}` — {tamanho} chars")
+
+        await update.message.reply_text("\n".join(linhas))
 
     async def _cmd_status(self, update: Update, _context) -> None:
-        await update.message.reply_text("⚠️ Comando ainda não implementado.")
+        qtd_anotacoes = len(list(self.source_dir.glob("*.md")))
+
+        if self.imagens_dir.exists():
+            qtd_imagens = len(list(self.imagens_dir.iterdir()))
+        else:
+            qtd_imagens = 0
+
+        await update.message.reply_text(
+            f"📊 **Status do conteúdo**\n\n"
+            f"📝 Anotações: {qtd_anotacoes}\n"
+            f"🖼️ Imagens: {qtd_imagens}\n"
+            f"📂 Diretório: `{self.source_dir}`"
+        )
 
     async def _handle_text(self, update: Update, _context) -> None:
         texto = update.message.text.strip()

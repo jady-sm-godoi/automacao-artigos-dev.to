@@ -130,11 +130,11 @@ corretas com base no conteúdo de /source
 
 ### Implementation for User Story 4
 
-- [ ] T072 [P] [US4] Implement /listar command listing .md files in /source
+- [X] T072 [P] [US4] Implement /listar command listing .md files in /source
   in src/services/telegram_bot.py
-- [ ] T073 [P] [US4] Implement /status command showing count of
+- [X] T073 [P] [US4] Implement /status command showing count of
   annotations and images in src/services/telegram_bot.py
-- [ ] T074 [US4] Implement /ajuda command listing all available commands
+- [X] T074 [US4] Implement /ajuda command listing all available commands
   in src/services/telegram_bot.py
 
 **Checkpoint**: Comandos de consulta funcionam e retornam informações
