@@ -23,6 +23,7 @@ class GeradorArtigo:
 
     def _garantir_diretorios(self) -> None:
         self.config.source_dir.mkdir(parents=True, exist_ok=True)
+        (self.config.source_dir / "imagens").mkdir(parents=True, exist_ok=True)
         self.config.output_dir.mkdir(parents=True, exist_ok=True)
         self.config.template_path.parent.mkdir(parents=True, exist_ok=True)
 
@@ -106,9 +107,7 @@ class GeradorArtigo:
         )
         match = padrao.match(conteudo)
         if match:
-            logger.info(
-                "Frontmatter normalizado: removido wrapper ```yaml"
-            )
+            logger.info("Frontmatter normalizado: removido wrapper ```yaml")
             return match.group(1) + "\n\n" + match.group(2)
         return conteudo
 

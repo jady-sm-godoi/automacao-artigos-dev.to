@@ -98,7 +98,7 @@ class PublicadorDevto:
                 f' — alt: "{alt}"]'
             )
             substituicoes.append((match.group(0), placeholder))
-            detalhes.append(f"{caminho} (alt: \"{alt}\")")
+            detalhes.append(f'{caminho} (alt: "{alt}")')
 
         if not substituicoes:
             return conteudo

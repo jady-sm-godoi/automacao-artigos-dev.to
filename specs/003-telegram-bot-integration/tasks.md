@@ -30,9 +30,9 @@ implementation and testing of each story.
 
 **Purpose**: Project initialization and dependency setup
 
-- [ ] T055 Add python-telegram-bot >=21.0 to pyproject.toml dependencies
-- [ ] T056 [P] Add TELEGRAM_BOT_TOKEN to src/config.py and .env.example
-- [ ] T057 Create /source/imagens directory (auto-create logic)
+- [X] T055 Add python-telegram-bot >=21.0 to pyproject.toml dependencies
+- [X] T056 [P] Add TELEGRAM_BOT_TOKEN to src/config.py and .env.example
+- [X] T057 Create /source/imagens directory (auto-create logic)
 
 ---
 
