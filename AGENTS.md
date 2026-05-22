@@ -13,6 +13,7 @@ GPT-4o. Também publica artigos no Dev.to via API.
 - [x] Implementação: COMPLETA
 - [x] Artigos gerados com sucesso (ex: `artigos/github-speckit.md`)
 - [x] Publicação no Dev.to implementada (comando `publish`)
+- [ ] Telegram Bot (`specs/003-telegram-bot-integration/spec.md`) — EM PLANEJAMENTO
 
 ### Stack Tecnológica
 - **Linguagem**: Python 3.11+
@@ -22,12 +23,13 @@ GPT-4o. Também publica artigos no Dev.to via API.
 - **HTTP**: httpx
 - **Markdown**: python-frontmatter
 - **UI Terminal**: Rich
+- **Telegram Bot**: python-telegram-bot
 
 ### Estrutura do Projeto
 ```text
 src/
 ├── main.py           # Entry point
-├── cli.py            # Comandos CLI (generate, publish)
+├── cli.py            # Comandos CLI (generate, publish, bot)
 ├── agent.py          # Agente Agno
 ├── config.py         # Configurações
 ├── logger.py         # Logger estruturado
@@ -35,7 +37,8 @@ src/
 │   ├── reader.py     # Leitor markdown
 │   ├── generator.py  # Gerador artigos
 │   ├── template.py   # Templates prompt
-│   └── publisher.py  # Publicação Dev.to
+│   ├── publisher.py  # Publicação Dev.to
+│   └── telegram_bot.py  # Bot Telegram
 └── models/
     └── artigo.py     # Modelos dados
 
@@ -44,11 +47,13 @@ tests/
 │   ├── test_reader.py
 │   ├── test_template.py
 │   ├── test_generator.py
-│   └── test_publisher.py
+│   ├── test_publisher.py
+│   └── test_telegram_bot.py
 └── integration/
     └── test_cli.py
 
 source/               # Anotações entrada
+source/imagens/       # Imagens via Telegram
 artigos/             # Artigos gerados
 templates/
 └── prompt_template.md
@@ -86,6 +91,9 @@ artigo publish <nome>
 # Publicar artigo (publicado)
 artigo publish <nome> --published
 
+# Iniciar bot do Telegram
+artigo bot
+
 # Ajuda
 artigo --help
 ```
@@ -112,6 +120,7 @@ uv run pytest -v
 5. Phase 5: User Story 3 - Estilo Medium (T030-T032) ✅
 6. Phase 6: Polish & Testes (T033-T041) ✅
 7. Phase 7: Publicação Dev.to (T042-T054) ✅
+8. Phase 8: Telegram Bot Integration — EM ANDAMENTO
 
 ### Referências
 - Plano: `specs/001-artigo-blog-generator/plan.md`
@@ -119,4 +128,5 @@ uv run pytest -v
 - Tarefas: `specs/001-artigo-blog-generator/tasks.md`
 - Constitution: `.specify/memory/constitution.md`
 - API Dev.to: https://developers.forem.com/api/v1#tag/articles
+- Telegram Bot: `specs/003-telegram-bot-integration/plan.md`
 <!-- SPECKIT END -->
