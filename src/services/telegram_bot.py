@@ -242,6 +242,7 @@ class TelegramBotService:
         await msg.edit_text(
             f"✅ Artigo **{nome_artigo}** publicado!\n\n`{saida}`"
         )
+        self._limpar_source()
 
     async def _cmd_listar(self, update: Update, _context) -> None:
         anotacoes = sorted(self.source_dir.glob("*.md"))
@@ -377,3 +378,8 @@ class TelegramBotService:
             logger.info("Parando bot...")
             self.application.stop()
             self._running = False
+
+    def _limpar_source(self) -> None:
+        for arq in self.source_dir.glob("*.md"):
+            arq.unlink()
+            logger.info("Anotação removida: %s", arq.name)

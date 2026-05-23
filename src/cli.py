@@ -103,6 +103,7 @@ def publish(
         url = resultado.get("url", "desconhecida")
         console.print(f"   URL: [blue]{url}[/]")
         console.print(f"   ID:  {resultado.get('id', '?')}")
+        _limpar_source(source)
 
     except PermissionError as e:
         console.print(f"\n[red]✗[/] {e}")
@@ -131,6 +132,13 @@ def bot():
     except Exception as e:
         console.print(f"\n[red]✗[/] Erro ao iniciar bot: {e}")
         raise typer.Exit(code=1)
+
+
+def _limpar_source(source_dir: Path) -> None:
+    if not source_dir.exists():
+        return
+    for arq in source_dir.glob("*.md"):
+        arq.unlink()
 
 
 def _buscar_arquivo(nome: str, diretorio: Path) -> Optional[Path]:
