@@ -246,14 +246,27 @@ class TelegramBotService:
 
     async def _cmd_listar(self, update: Update, _context) -> None:
         anotacoes = sorted(self.source_dir.glob("*.md"))
-        if not anotacoes:
-            await update.message.reply_text("📂 Nenhuma anotação em /source.")
-            return
+        output_dir = Path("artigos")
+        artigos = (
+            sorted(output_dir.glob("*.md")) if output_dir.exists() else []
+        )
 
-        linhas = ["📂 **Anotações em /source:**\n"]
-        for arq in anotacoes:
-            tamanho = len(arq.read_text(encoding="utf-8"))
-            linhas.append(f"• `{arq.name}` — {tamanho} chars")
+        linhas = []
+        if anotacoes:
+            linhas.append("📂 **Anotações em /source:**\n")
+            for arq in anotacoes:
+                tamanho = len(arq.read_text(encoding="utf-8"))
+                linhas.append(f"• `{arq.name}` — {tamanho} chars")
+            linhas.append("")
+        else:
+            linhas.append("📂 Nenhuma anotação em /source.\n")
+
+        if artigos:
+            linhas.append("📂 **Artigos em /artigos:**\n")
+            for arq in artigos:
+                linhas.append(f"• `{arq.name}`")
+        else:
+            linhas.append("📂 Nenhum artigo em /artigos.")
 
         await update.message.reply_text("\n".join(linhas))
 

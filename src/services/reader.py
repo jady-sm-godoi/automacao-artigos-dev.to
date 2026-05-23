@@ -7,7 +7,7 @@ from src.models.artigo import Anotacao
 
 logger = setup_logger(__name__)
 
-TAMANHO_MINIMO = 100
+TAMANHO_MINIMO = 50
 
 
 class MarkdownReader:
