@@ -1,11 +1,44 @@
 # Automacao Artigos
 
-**CLI tool em Python** que transforma anotações Markdown em artigos formatados
-no estilo Medium usando IA (GPT-4o via Agno) e publica no Dev.to.
+**CLI tool em Python** que transforma suas anotações Markdown em artigos
+bonitões no estilo Medium usando IA (GPT-4o via Agno) e ainda publica
+tudo no Dev.to pra você. ✨
 
 ```
 anotações.md  →  [Agno + GPT-4o]  →  artigo-medium.md  →  Dev.to
 ```
+
+## Quick Start 🚀
+
+Bora botar pra rodar em 5 minutos?
+
+**Pré-requisitos**: Python 3.11+ e [uv](https://docs.astral.sh/uv/).
+
+```bash
+# 1. Baixar o projeto
+git clone <repo-url>
+cd automacao_artigos
+
+# 2. Instalar dependências
+uv sync
+
+# 3. Configurar chaves de API (crie um arquivo .env na raiz)
+echo 'OPENAI_API_KEY="sk-..."' >> .env
+echo 'DEVTO_API_KEY="sua-chave-aqui"' >> .env
+```
+
+> A chave da Dev.to você pega em: https://dev.to/settings/account →
+> "DEV Community API Keys"
+
+```bash
+# 4. Gerar um artigo a partir das anotações em source/
+artigo generate
+
+# 5. Publicar no Dev.to (como rascunho)
+artigo publish github-speckit
+```
+
+Pronto! 🎉 Seu artigo saiu do forno e foi pro Dev.to.
 
 ---
 
@@ -16,6 +49,7 @@ anotações.md  →  [Agno + GPT-4o]  →  artigo-medium.md  →  Dev.to
   - [Uso](#uso)
   - [Gerar Artigo](#gerar-artigo)
   - [Publicar no Dev.to](#publicar-no-devto)
+  - [Bot do Telegram](#bot-do-telegram)
   - [Formato das Anotações](#formato-das-anotacoes)
   - [Personalização](#personalizacao)
 - [Para Programadores](#para-programadores)
